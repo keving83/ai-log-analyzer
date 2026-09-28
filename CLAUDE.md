@@ -15,7 +15,7 @@ Lis README.md (contrat JSON, limites) et ATELIER.md (déroulé) avant toute modi
 - `signatures/community/crawler-user-agents.json` : référentiel MIT (~1 500 robots), seconde couche du classifieur après bots.json et avant le filet générique ; mise à jour : `python signatures/community/update.py`.
 - `analyzer/{behavior,crawl_budget,structure,aio,referrals,robots_sim,stealth,compare}.py` : un module = une section du rapport.
 - `analyzer/explain.py` : textes pédagogiques + alertes. `analyzer/report.py` : assemblage. `cli.py` : point d'entrée.
-- `prompts/` : diagnostic, tuteur, surcouche. `examples/streamlit_dashboard.py` : surcouche de référence.
+- `prompts/` : diagnostic, tuteur, surcouche. `examples/streamlit_dashboard.py` : surcouche de référence. `examples/studio.py` : interface web complète (dépôt des logs, graphiques, diagnostic et chat IA).
 - `samples/` : dataset synthétique (régénérable via `generate_demo.py`) + fixtures GSC / Screaming Frog / sitemap / robots.
 
 Validation rapide : `python cli.py samples/demo_access.log --robots samples/demo_robots.txt --gsc samples/demo_gsc_pages.csv --crawl samples/demo_screamingfrog.csv --sitemap samples/demo_sitemap.xml --compare 2026-08-17`

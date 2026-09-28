@@ -42,7 +42,7 @@ python signatures/ip_ranges/update.py      # plages IP de 27 sources (Google, Op
 python signatures/community/update.py      # facultatif : rafraîchit le référentiel de ~1 500 robots (déjà fourni dans le repo)
 ```
 
-`requirements-examples.txt` ajoute Streamlit pour la surcouche d'exemple Python ; `requirements-dev.txt` ajoute pytest. Le moteur tourne en local, sans serveur ni réseau (sauf `--dns`, `--robots` sans fichier et `--diagnose`).
+`requirements-examples.txt` ajoute Streamlit pour les surcouches Python (Studio et dashboard d'exemple) ; `requirements-dev.txt` ajoute pytest. Le moteur tourne en local, sans serveur ni réseau (sauf `--dns`, `--robots` sans fichier et `--diagnose`).
 
 Format de logs pas reconnu ? `python cli.py mes.logs --doctor` montre le format détecté, les colonnes disponibles et les lignes rejetées avec la raison.
 
@@ -87,6 +87,22 @@ Un log au format *common* (sans User-Agent) ne permet pas de reconnaître les bo
 **Sous Windows** : `python` peut s'appeler `py` (`py cli.py …`). Les jokers marchent (`python cli.py "logs\*.gz"`), un dossier aussi (`python cli.py logs\`). Pour un chemin avec espaces, glissez le fichier dans le terminal : il colle le chemin entre guillemets. `hits.csv` s'ouvre dans Excel avec les accents.
 
 Où trouver ses logs : **sur mutualisé cPanel (o2switch…), activez "Archiver les journaux" dans Accès brut au moins une semaine avant, sinon vous n'aurez que la journée en cours.** OVH (manager → Logs), o2switch / cPanel (Raw Access), Cloudflare (Logpush ou Logs API), Nginx (`/var/log/nginx/access.log`), WordPress sur Kinsta/WP Engine (export depuis le dashboard).
+
+## Interface visuelle : le Studio
+
+Pas envie du terminal ? `examples/studio.py` fait tout dans le navigateur : on dépose ses logs (ou on lance la démo), on lit les graphiques, et l'IA rédige le diagnostic et répond aux questions sur le rapport.
+
+```bash
+pip install -r requirements-examples.txt
+streamlit run examples/studio.py      # s'ouvre sur http://localhost:8501
+```
+
+- **Données** : logs de démo, vos fichiers (glisser-déposer, ou chemin d'un dossier pour les gros volumes), ou un `report.json` existant. En options : robots.txt, sitemap, export Search Console, export Screaming Frog / OnCrawl, date d'une action à évaluer (avant / après).
+- **Onglets** : plan d'action et décision bot par bot, bots IA, faux bots (liste d'IP à bannir téléchargeable), visites venant d'IA, évolution jour par jour, crawl Google, diagnostic IA, questions au tuteur, exports (`report.html`, `summary.md`, `report.json`, `hits.csv`, `report_schema.json`).
+- **IA** : même clé que `--diagnose` (`ANTHROPIC_API_KEY`, `OPENAI_API_KEY` ou `DEEPSEEK_API_KEY`, en variable d'environnement ou dans `.env`) ; fournisseur et modèle au choix dans la barre latérale. Sans clé, tout le reste fonctionne et le prompt de diagnostic reste téléchargeable pour claude.ai.
+- Tout tourne en local : les logs ne quittent votre machine que pour l'appel IA, qui n'envoie que le rapport allégé, jamais les logs bruts.
+
+Le Studio est lui aussi une surcouche d'exemple : forkez-le et adaptez-le à votre public.
 
 ## Contrat `report.json`
 
